@@ -1,0 +1,8 @@
+/node_modules
+/build
+/543-p1_JPX
+/repo
+/.repo
+
+.npm
+.DS_Store

@@ -1,0 +1,26 @@
+{
+  "name": "cecs543_vcs",
+  "version": "1.0.0",
+  "description": "CECS 543 vcs project",
+  "scripts": {
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "start": "concurrently -k \"npm run server\" \"npm run client\""
+  },
+  "author": "Jun Li",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "concurrently": "^5.0.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.1",
+    "nodemon": "^1.19.4",
+    "prettier": "^1.19.1"
+  }
+}
