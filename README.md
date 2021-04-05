@@ -7,7 +7,7 @@ Team members    : Jun Li, Prathamesh Patil
 Intro           : Check-Out, Check-In, List, & Label features of VCS
 
 
-*The VCS repository holds copies of all artifacts (i.e., all versions) of each file of a project ìunder configuration controlî. A file name alone is not sufficient to distinguish between several of its artifacts/versions; hence, within the VCS repository we will use a code name for each artifact and will
+*The VCS repository holds copies of all artifacts (i.e., all versions) of each file of a project ‚Äúunder configuration control‚Äù. A file name alone is not sufficient to distinguish between several of its artifacts/versions; hence, within the VCS repository we will use a code name for each artifact and will
 put all the artifacts of a particular file in a folder, and that folder is named using the original file's name.*
 
 ##Part 1 : Create Repository
@@ -15,7 +15,7 @@ put all the artifacts of a particular file in a folder, and that folder is named
 ###Use Case Title: Create Repository
 **Tag-line**: Create a repository for the given project source tree (including all its files and their folder paths) within the project.
 **Summary**: The user needs to keep track of various snapshots of their project. (OTOH, different projects should be kept in different repositories.) Each project source tree snapshot includes the currentstate of each file in their project tree at  that specific moment during project development. In order to keep track of each snapshot, we create a repository (repo) in the given target folder and copy a snapshop of the source tree from the given project source tree root folder. The entire project source tree folder (including its root folder) is replicated within (and immediately under) the target repository root folder.
-Additionally, on creation of the repository, a snapshot manifest (i.e., a snapshot summary) for this command is created listing the command particulars (i.e., the ìcommand lineî used), the date and time of the command, and for each project source file a line describing that source file (AKA that artifact) in the project source tree along with its project folder's relative path. Because we expect, eventually, to store more than one artifact of each project file within the project's VCS repository, we put the artifact (the source file snapshot) of a file under a new (non-project) leaf folder, where the leaf folder is given the file's name and the artifact gets an artifact ID (a code name). Note the contents of the artifact file is the same as its corresponding project source file snapshot. The leaf folder appears in the repository in same relative position as its corresponding file appears in the project source folder. The artifact ID
+Additionally, on creation of the repository, a snapshot manifest (i.e., a snapshot summary) for this command is created listing the command particulars (i.e., the ‚Äúcommand line‚Äù used), the date and time of the command, and for each project source file a line describing that source file (AKA that artifact) in the project source tree along with its project folder's relative path. Because we expect, eventually, to store more than one artifact of each project file within the project's VCS repository, we put the artifact (the source file snapshot) of a file under a new (non-project) leaf folder, where the leaf folder is given the file's name and the artifact gets an artifact ID (a code name). Note the contents of the artifact file is the same as its corresponding project source file snapshot. The leaf folder appears in the repository in same relative position as its corresponding file appears in the project source folder. The artifact ID
 format is described below.
 
 **Simplifying assumptions**:
@@ -23,20 +23,20 @@ format is described below.
 2. No frills: You may ignore user input mistakes.
 3. A file artifact will consist of the full file contents. (No deltas/no diffs.)
 4. The repo will include the entire ptree folder hierarchy, including its root folder.
-5. Each ptree file will get a ìleafî folder of the same name to hold that file's artifacts ñ initially
+5. Each ptree file will get a ‚Äúleaf‚Äù folder of the same name to hold that file's artifacts ‚Äì initially
 just the first artifact (snapshot of that file). Thus, if ptree folder xcp/ has two files fred.c and
-jack.c, the repo will have folder xcp/ as well as leaf sub-folders fred.c/ and jack.c/ ñ where leaf
+jack.c, the repo will have folder xcp/ as well as leaf sub-folders fred.c/ and jack.c/ ‚Äì where leaf
 folder fred.c/ will contain all that ptree file's fred.c artifacts and leaf folder jack.c/ will contain
 all that ptree file's jack.c artifacts.
 6. We will create an artifact ID (ArtID) code name as discussed below, for each file snapshot.
 7. The artifact (file version) that is in a leaf folder gets named by it's ArtID code name.
 8. Assume that both given source and empty target folders exist, and that disk space is adequate.
-9. A command-line interface within a web page (e.g., edit boxes & ìCreateî button) is sufficient.
+9. A command-line interface within a web page (e.g., edit boxes & ‚ÄúCreate‚Äù button) is sufficient.
 
 
 ### Artifact ID (ArtID) code names
 **Weighted checksum**: The code name will be a rolling multi-byte weighted checksum of all the
-characters (bytes) in the file followed by a hyphen and an ìLî and the integer file size, followed by the
+characters (bytes) in the file followed by a hyphen and an ‚ÄúL‚Äù and the integer file size, followed by the
 file's extension. The weights by which each character in a group are multiplied are 1, 7, 3, 7, and, 11.
 
 ```
@@ -49,7 +49,7 @@ and the file size is 11.
 
 (Note, the ASCII numeric value of each character is used and we indicated the
 space character by ' '.) 
-For this version of the source file fred.txt, the AID code name would be ì5478-L11.txtî, in a leaf folder named ìfred.txtî.
+For this version of the source file fred.txt, the AID code name would be ‚Äú5478-L11.txt‚Äù, in a leaf folder named ‚Äúfred.txt‚Äù.
 
 **Modulus**: Because the sum can get rather large for a big file, make sure the sum never gets too large by wrapping it using the following prime modulus operator: 
 m == (2^31) - 1 == 2,147,483,647.
@@ -95,79 +95,79 @@ We will do the merge in two parts:
 * merge-in. 
 
 The merge-out command will gather the information needed for the user to manually do a 3-way merge. (Sorry, user, but this is a somewhat no-frills VCS.) 
-The merge-in command will complete the merge by "checking in" a snapshot of the user's fully-merged project tree ñ the user did the full-merge by hand (again, no frills).
+The merge-in command will complete the merge by "checking in" a snapshot of the user's fully-merged project tree ‚Äì the user did the full-merge by hand (again, no frills).
 
-Also, note that our VCS is project-based, not file-based. We do not run a VCS command to copy an individual file to/from the repo, but instead only to copy an entire project tree (which resides outside the repo directory) to/from the repo (where ìto repoî is taking a snapshot and ìfrom repoî is recreating
+Also, note that our VCS is project-based, not file-based. We do not run a VCS command to copy an individual file to/from the repo, but instead only to copy an entire project tree (which resides outside the repo directory) to/from the repo (where ‚Äúto repo‚Äù is taking a snapshot and ‚Äúfrom repo‚Äù is recreating
 a new project tree from a snapshot).
 
 ###Source & Target
 The merge-out arguments are a repo source snapshot and a target project tree (actually that target's latest snapshot, from which we can extract the location of the target project tree). The source snapshot is the repo 'R' snapshot. The Target 'T' snapshot is assumed to be a snapshot that the user has just checked-in (sorry, user, you do it, no-frills). The Target project tree is in the user's project folder from which the T snapshot was (just) checked-in. The merge-out will (maybe) add new files/folders to the T project tree.
 
 ###Merge File Collisions
-These new files will include those in the Source that don't match (don't have the same artifact ID) as their corresponding target files ñ called collision files. Because we are merging an entire project tree, there may be many collision files for one merge-out command. When we detect that one of the many project snapshot files collides (has a different artifact ID) with the corresponding file of the other snapshot, we will add both files to the target project tree. The mismatching file from the repo source snapshot will be added, but with a suffix of ì_MRî meaning ìMismatch-from-Repoî. The corresponding file from the target snapshot will have its filename suffixed with ì_MTî meaning
-ìMismatch-in-Targetî. Both files will retain their existing extensions (e.g, ìfred_MR.javaî and ìfred_MT.javaî). Also, a third corresponding file, the ì_MGî file will be added to the target project tree; the ìgrandmaî file.
-Also, (optionally) the merge-out command will create a manifest file which includes the command and arguments, and the name of the ìgrandmaî snapshot.
+These new files will include those in the Source that don't match (don't have the same artifact ID) as their corresponding target files ‚Äì called collision files. Because we are merging an entire project tree, there may be many collision files for one merge-out command. When we detect that one of the many project snapshot files collides (has a different artifact ID) with the corresponding file of the other snapshot, we will add both files to the target project tree. The mismatching file from the repo source snapshot will be added, but with a suffix of ‚Äú_MR‚Äù meaning ‚ÄúMismatch-from-Repo‚Äù. The corresponding file from the target snapshot will have its filename suffixed with ‚Äú_MT‚Äù meaning
+‚ÄúMismatch-in-Target‚Äù. Both files will retain their existing extensions (e.g, ‚Äúfred_MR.java‚Äù and ‚Äúfred_MT.java‚Äù). Also, a third corresponding file, the ‚Äú_MG‚Äù file will be added to the target project tree; the ‚Äúgrandma‚Äù file.
+Also, (optionally) the merge-out command will create a manifest file which includes the command and arguments, and the name of the ‚Äúgrandma‚Äù snapshot.
 
 ###Grandma
-In case of at least one file collision, you will need to find the ìgrandmaî snapshot of the source and target snapshots. This is the most recent common ancestor snapshot. The ìgrandmaî snapshot is the same for all pairs of colliding files. That Grandma 'G' snapshot is determined by the path of immediate ancestor snapshots from a given (R or T) snapshot back to the root of the repo snapshot directed acyclic graph (DAG). The 'G' file will get its own suffix ì_MGî meaning ìMismatch-from-Grandmaî (e.g.,
-ìfred_MG.javaî). Note that because of prior merges, there may be more than one path to the root from a snapshot; and then the grandma will be the most recent common ancestor of those common ancestors along any of those paths to the root.
+In case of at least one file collision, you will need to find the ‚Äúgrandma‚Äù snapshot of the source and target snapshots. This is the most recent common ancestor snapshot. The ‚Äúgrandma‚Äù snapshot is the same for all pairs of colliding files. That Grandma 'G' snapshot is determined by the path of immediate ancestor snapshots from a given (R or T) snapshot back to the root of the repo snapshot directed acyclic graph (DAG). The 'G' file will get its own suffix ‚Äú_MG‚Äù meaning ‚ÄúMismatch-from-Grandma‚Äù (e.g.,
+‚Äúfred_MG.java‚Äù). Note that because of prior merges, there may be more than one path to the root from a snapshot; and then the grandma will be the most recent common ancestor of those common ancestors along any of those paths to the root.
 
 ###Merge-In
-The merge-in command assumes 1) that the user has finished manually fully-merging the R file changes into the corresponding T collision file, for all the collision file pairs, as needed. This includes removing the MR and MG files and removing the ì_MTî file suffix. And 2) the user has done no other repo commands since the merge-out command on this project tree. (Commands on other project trees for the same team project can be done, and should not cause a problem.) For example, the 3 ìfred_M*.javaî files will be used to create a merged ìfred.javaî file (without the _MT) and the _MR, and _MG files will be removed ñ all by the user.
-Merge-in is merely a duplicate of the check-in command, except that it has a different command name, and because no other commands have been run on the project tree, the merge-in command will always appear as the child of a merge-out command in the repo's set of manifest files. The merge-in manifest contents are equivalent to the check-in manifest file. (Note, if you don't want to create a merge-out manifest file, you must change your ìgrandmaî detection mechanism appropriately.)
+The merge-in command assumes 1) that the user has finished manually fully-merging the R file changes into the corresponding T collision file, for all the collision file pairs, as needed. This includes removing the MR and MG files and removing the ‚Äú_MT‚Äù file suffix. And 2) the user has done no other repo commands since the merge-out command on this project tree. (Commands on other project trees for the same team project can be done, and should not cause a problem.) For example, the 3 ‚Äúfred_M*.java‚Äù files will be used to create a merged ‚Äúfred.java‚Äù file (without the _MT) and the _MR, and _MG files will be removed ‚Äì all by the user.
+Merge-in is merely a duplicate of the check-in command, except that it has a different command name, and because no other commands have been run on the project tree, the merge-in command will always appear as the child of a merge-out command in the repo's set of manifest files. The merge-in manifest contents are equivalent to the check-in manifest file. (Note, if you don't want to create a merge-out manifest file, you must change your ‚Äúgrandma‚Äù detection mechanism appropriately.)
 
 ###DAG
 Because the mom-kid (parent-child) relationships among the manifest files can be a DAG (directed acyclic graph), finding the grandma snapshot (the most recent common ancestor) of the source and the target is a bit more complicated than finding the common ancestor in a tree. If, in searching upward from the source or target snapshot you encounter a merge-out and merge-in pair of snapshots, you will have to follow both parent branches upward toward the root (the create-repo snapshot) because the grandma could be in either one of them. A simple way of doing this is to pick one branch to do immediately and put the other mom-branch's snapshot (or whatever is needed to identify and use it later) on a "pending" list (or array, stack, etc.). You will find a grandma candidate snapshot along every path from your (R or T) snapshot up to the root (create-repo snapshot). It is only the most recent of them that is the actual grandma snapshot for this R-and-T merge.
 
 ###Dot-Files
-If you find it convenient, you can put VCS files in the user's project tree at its root folder. These files must have a filename beginning with a dot/period, '.', and the prefix ìvcsxî for our VCS system. If you decide to do this, make sure that dot-files are not included when you check in a snapshot.
+If you find it convenient, you can put VCS files in the user's project tree at its root folder. These files must have a filename beginning with a dot/period, '.', and the prefix ‚Äúvcsx‚Äù for our VCS system. If you decide to do this, make sure that dot-files are not included when you check in a snapshot.
 
 ###User Interface
-Make sure that you can enter a ìcommand lineî in a VCS web page edit box to initiate a command. The command line should include the VCS command name and all arguments needed to process that
+Make sure that you can enter a ‚Äúcommand line‚Äù in a VCS web page edit box to initiate a command. The command line should include the VCS command name and all arguments needed to process that
 command. This is in addition to any fancier GUI mechanisms you have provided. All VCS command should be able to be run via this command line mechanism.
 
 
 Contents
 
     /client                         # folder includes all frontend content
-        /public                     # includes index.html, manifest.json etc. only index.html list below
-            index.html              # index.html, the frontend page
-        /src                        # includes all React components
-            /actions                # includes redux actions, action types
-                actions.js          # redux actions
-                actionTypes.js      # action types for route redux reducer
-                index.js            # index file
-            /components             # often used components
-                Input.jsx           # input text field components
-                RadioBtn.jsx        # radio button for switch different commands
+        /public                     // includes index.html, manifest.json etc. only index.html list below
+            index.html              // index.html, the frontend page
+        /src                        // includes all React components
+            /actions                // includes redux actions, action types
+                actions.js          // redux actions
+                actionTypes.js      // action types for route redux reducer
+                index.js            // index file
+            /components             // often used components
+                Input.jsx           // input text field components
+                RadioBtn.jsx        // radio button for switch different commands
             /reducers
-                rootReducer.js      # redux reducer
+                rootReducer.js      // redux reducer
             /store
-                state.js            # default redux state
-                store.js            # redux store
+                state.js            // default redux state
+                store.js            // redux store
             /styles
-                _mixin.scss         # sass mixin function
-                styles.scss         # sass styles
-            App.jsx                 # Main App component
-            Col1.jsx                # Col1, handle command form
-            Col2.jsx                # Col2, display all repos
-            Col3.jsx                # Col3, display all labels and manifests for particular repo
-            index.js                # React entry index.js file
-        jsconfig.json               # configure file for React path
+                _mixin.scss         // sass mixin function
+                styles.scss         // sass styles
+            App.jsx                 // Main App component
+            Col1.jsx                // Col1, handle command form
+            Col2.jsx                // Col2, display all repos
+            Col3.jsx                // Col3, display all labels and manifests for particular repo
+            index.js                // React entry index.js file
+        jsconfig.json               // configure file for React path
         package.json
         package-lock.json
-    /.repo                           # all created repos will under this directory
-        /project1                   # repo used for demonstration
-        /project2                   # repo has a lot of manifest files, demonstration for website scroll
-    /routes                         # express routing different commands
-        checkin.js                  # check-in command
-        checkout.js                 # check-out command
-        create.js                   # create-repo command
-        fetchData.js                # fetch all repos and their manifest files
-        label.js                    # label command
-        mergeIn.js                  # merge-in command
-        mergeOut.js                 # merge-out command
-    /utils                          # backend helper functions
+    /.repo                           // all created repos will under this directory
+        /project1                   // repo used for demonstration
+        /project2                   // repo has a lot of manifest files, demonstration for website scroll
+    /routes                         // express routing different commands
+        checkin.js                  // check-in command
+        checkout.js                 // check-out command
+        create.js                   // create-repo command
+        fetchData.js                // fetch all repos and their manifest files
+        label.js                    // label command
+        mergeIn.js                  // merge-in command
+        mergeOut.js                 // merge-out command
+    /utils                          // backend helper functions
         file_utils.js
         manifest_utils.js
         path_utils.js
@@ -175,7 +175,7 @@ Contents
     package.json
     package-lock.json
     README.txt
-    server.js                       # backend main file
+    server.js                       // backend main file
 
 External requirements
     Node.js with npm
@@ -203,18 +203,18 @@ Project Dependencies:   includes in package.json file, list as below
     react-router        Declarative routing for React
 
 Setup and Installation
-    # at project root directory, open the terminal, install backend dependencies
+    // at project root directory, open the terminal, install backend dependencies
     npm install
 
-    # wait until installations completed,
-    # change directory to /client, install frontend dependencies
+    // wait until installations completed,
+    // change directory to /client, install frontend dependencies
     cd client
     npm install
 
-    # return to the root directory
+    // return to the root directory
     cd ..
 
-    # start the project, the browser will pop up automatically
+    // start the project, the browser will pop up automatically
     npm start
 
 Sample invocation & results
@@ -223,7 +223,7 @@ Sample invocation & results
     2. Already modify /543-p1_JPX/index.js, generate manifest_1.json
     3. Already modify /543-p1_JPX/index.js again, generate manifest_2.json
 
-    # starting here
+    // starting here
     1. Check out command
         At website, select checkout command
             repo        = project2
@@ -238,8 +238,8 @@ Sample invocation & results
         Modify /jun/543-p1_JPX/index.js, with comment // will be manifest_4.json
         At website, select checkin command
             repo        = project2
-            # copy the path of jun/543-p1_JPX, linux is fine with this, but different for Windows
-            # right click jun/543-p1_JPX  directory, select Copy Path.
+            // copy the path of jun/543-p1_JPX, linux is fine with this, but different for Windows
+            // right click jun/543-p1_JPX  directory, select Copy Path.
             src         = jun/543-p1_JPX
         Click Submit button to checkin.
             manifest_4.json will be generated under /.repo/project2
@@ -277,8 +277,8 @@ Sample invocation & results
         After remove conflict files, at website, select merge-in command
             repo        = project2
             src         = jun/543-p1_JPX
-                            # copy the path of jun/543-p1_JPX, linux is fine with this, but different for Windows
-                            # right click jun/543-p1_JPX  directory, select Copy Path.
+                            // copy the path of jun/543-p1_JPX, linux is fine with this, but different for Windows
+                            // right click jun/543-p1_JPX  directory, select Copy Path.
             mt          = manifest_3.json
             mr          = manifest_1.json
         Click Submit button
