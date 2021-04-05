@@ -1,4 +1,4 @@
-#Version Control System
+# Version Control System
 
 Class Number    : CECS 543
 Project Name    : VCS Project 2 - Check-Out, Check-In, List, & Label
@@ -10,10 +10,12 @@ Intro           : Check-Out, Check-In, List, & Label features of VCS
 *The VCS repository holds copies of all artifacts (i.e., all versions) of each file of a project “under configuration control”. A file name alone is not sufficient to distinguish between several of its artifacts/versions; hence, within the VCS repository we will use a code name for each artifact and will
 put all the artifacts of a particular file in a folder, and that folder is named using the original file's name.*
 
-##Part 1 : Create Repository
+## Part 1 : Create Repository
 
-###Use Case Title: Create Repository
+### Use Case Title: Create Repository
+
 **Tag-line**: Create a repository for the given project source tree (including all its files and their folder paths) within the project.
+
 **Summary**: The user needs to keep track of various snapshots of their project. (OTOH, different projects should be kept in different repositories.) Each project source tree snapshot includes the currentstate of each file in their project tree at  that specific moment during project development. In order to keep track of each snapshot, we create a repository (repo) in the given target folder and copy a snapshop of the source tree from the given project source tree root folder. The entire project source tree folder (including its root folder) is replicated within (and immediately under) the target repository root folder.
 Additionally, on creation of the repository, a snapshot manifest (i.e., a snapshot summary) for this command is created listing the command particulars (i.e., the “command line” used), the date and time of the command, and for each project source file a line describing that source file (AKA that artifact) in the project source tree along with its project folder's relative path. Because we expect, eventually, to store more than one artifact of each project file within the project's VCS repository, we put the artifact (the source file snapshot) of a file under a new (non-project) leaf folder, where the leaf folder is given the file's name and the artifact gets an artifact ID (a code name). Note the contents of the artifact file is the same as its corresponding project source file snapshot. The leaf folder appears in the repository in same relative position as its corresponding file appears in the project source folder. The artifact ID
 format is described below.
@@ -35,6 +37,7 @@ all that ptree file's jack.c artifacts.
 
 
 ### Artifact ID (ArtID) code names
+
 **Weighted checksum**: The code name will be a rolling multi-byte weighted checksum of all the
 characters (bytes) in the file followed by a hyphen and an “L” and the integer file size, followed by the
 file's extension. The weights by which each character in a group are multiplied are 1, 7, 3, 7, and, 11.
@@ -55,36 +58,37 @@ For this version of the source file fred.txt, the AID code name would be “5478
 m == (2^31) - 1 == 2,147,483,647.
 
 
+## Part 2 : Check-Out, Check-In, List, & Label
 
+### Label Command
 
-##Part 2 : Check-Out, Check-In, List, & Label
-
-###Label Command
 The labeling feature allows the user to associate a label (a text string) with a given manifest file, in order to make it easier for the user to remember and identify a particular project-tree snapshot when issuing commands to our VCS. The user should be able to associate at least four different labels to any given manifest file. (More is okay.) We can presume that the user is nice and always supplies a unique label so we don't have to check for the label already existing in some other manifest file. A
 label is supposed to uniquely identify a manifest file. We can also assume that a label (a string) is at
 most only 30 characters long. (But you can handle longer labels if you wish.) To add a label to a manifest file, the user uses a Label command, and along with a label string argument he/she must also specify the VCS repository location and either the target manifest's filename or an existing label that is
 already associated with that manifest. Once a manifest is labeled, the user can refer to the manifest by
 that label name in any other VCS commands in place of using a manifest name.
 
-###Check-Out Command
+### Check-Out Command
+
 The check-out ability lets a user recreate a specific version (snapshot) of the project tree. They do this by selecting a particular manifest file in the repo, as an argument. Of course, a manifest file specifies every version of every file from a particular version of a project tree. Note that a given repo
 folder only deals with one project (e.g., snapshots only for the Skyrocket project, or the Red-Bunny project, or the Halo project), but the repo can contain many versions (snapshots) of that one project. A snapshot can be created by anyone who has previously checked out a version of that project (but you do
 not have to verify this). On check-out, the recreated project tree is installed in an empty folder, which the user also selects as a second argument. We can assume that the target folder is empty. The checkout command also creates a new manifest file, of the checked out version, in the repo. The user should
 be able to specify the manifest file using a label, if it has one.
 
-###Check-In Command
+### Check-In Command
+
 The check-in ability lets the user update the repository (repo) with new version (snapshot) of a project tree for this repo. This means the VCS must add into the repo all changed files from the source project tree. So, each check-in is a (potentially different "version" of the project tree, and you create
 for it a new manifest file. This allows the user to track the modification history from a given project tree back, through various project versions, all the way to the repo's creation; by examining the repo's manifest files. Note that we assume labels are forever (the user doesn't remove a label). The user's
 folder containing a version of the project tree that the user specifies as an argument to the check-in command should have earlier been the target of a check-out command (or was the original create-repo project tree folder), and we will assume that this is always true. Therefore, in the repo's manifest files, we can trace from a given check-in (from a user's folder) back to the original check-out into that user's folder from a snapshot of some other user's project tree in some other folder, etc., all the way back to the original create-repo command. Note that your manifest files should reflect this ability, as it will be needed later. Also, note, a given repo only contains project-tree snapshots of a single project, which might be being worked on by several project members, each with one or more project-trees of their own.
 
-###Listing Command
+### Listing Command
+
 This may not need to be a command. You should display the existing manifest file names and their
 labels. If the list is too large for the display, you should display a portion of the list. (Whether paging
 or scrolling or some other method is up to you.)
 
 
-
-##Part 3 : Merge
+## Part 3 : Merge
 
 In this project part, we add the ability to merge two project tree snapshots (that are based on the same repo, and hence the same development team project). Note that we already have a natural branching effect due to check-out (of a project snapshot, AKA the Kid) coupled with tracking that project version's parent snapshot (AKA the Mom, as identified in the Kid's
 repo manifest).
@@ -100,29 +104,36 @@ The merge-in command will complete the merge by "checking in" a snapshot of the 
 Also, note that our VCS is project-based, not file-based. We do not run a VCS command to copy an individual file to/from the repo, but instead only to copy an entire project tree (which resides outside the repo directory) to/from the repo (where “to repo” is taking a snapshot and “from repo” is recreating
 a new project tree from a snapshot).
 
-###Source & Target
+### Source & Target
+
 The merge-out arguments are a repo source snapshot and a target project tree (actually that target's latest snapshot, from which we can extract the location of the target project tree). The source snapshot is the repo 'R' snapshot. The Target 'T' snapshot is assumed to be a snapshot that the user has just checked-in (sorry, user, you do it, no-frills). The Target project tree is in the user's project folder from which the T snapshot was (just) checked-in. The merge-out will (maybe) add new files/folders to the T project tree.
 
-###Merge File Collisions
+### Merge File Collisions
+
 These new files will include those in the Source that don't match (don't have the same artifact ID) as their corresponding target files – called collision files. Because we are merging an entire project tree, there may be many collision files for one merge-out command. When we detect that one of the many project snapshot files collides (has a different artifact ID) with the corresponding file of the other snapshot, we will add both files to the target project tree. The mismatching file from the repo source snapshot will be added, but with a suffix of “_MR” meaning “Mismatch-from-Repo”. The corresponding file from the target snapshot will have its filename suffixed with “_MT” meaning
 “Mismatch-in-Target”. Both files will retain their existing extensions (e.g, “fred_MR.java” and “fred_MT.java”). Also, a third corresponding file, the “_MG” file will be added to the target project tree; the “grandma” file.
 Also, (optionally) the merge-out command will create a manifest file which includes the command and arguments, and the name of the “grandma” snapshot.
 
-###Grandma
+### Grandma
+
 In case of at least one file collision, you will need to find the “grandma” snapshot of the source and target snapshots. This is the most recent common ancestor snapshot. The “grandma” snapshot is the same for all pairs of colliding files. That Grandma 'G' snapshot is determined by the path of immediate ancestor snapshots from a given (R or T) snapshot back to the root of the repo snapshot directed acyclic graph (DAG). The 'G' file will get its own suffix “_MG” meaning “Mismatch-from-Grandma” (e.g.,
 “fred_MG.java”). Note that because of prior merges, there may be more than one path to the root from a snapshot; and then the grandma will be the most recent common ancestor of those common ancestors along any of those paths to the root.
 
-###Merge-In
+### Merge-In
+
 The merge-in command assumes 1) that the user has finished manually fully-merging the R file changes into the corresponding T collision file, for all the collision file pairs, as needed. This includes removing the MR and MG files and removing the “_MT” file suffix. And 2) the user has done no other repo commands since the merge-out command on this project tree. (Commands on other project trees for the same team project can be done, and should not cause a problem.) For example, the 3 “fred_M*.java” files will be used to create a merged “fred.java” file (without the _MT) and the _MR, and _MG files will be removed – all by the user.
 Merge-in is merely a duplicate of the check-in command, except that it has a different command name, and because no other commands have been run on the project tree, the merge-in command will always appear as the child of a merge-out command in the repo's set of manifest files. The merge-in manifest contents are equivalent to the check-in manifest file. (Note, if you don't want to create a merge-out manifest file, you must change your “grandma” detection mechanism appropriately.)
 
-###DAG
+### DAG
+
 Because the mom-kid (parent-child) relationships among the manifest files can be a DAG (directed acyclic graph), finding the grandma snapshot (the most recent common ancestor) of the source and the target is a bit more complicated than finding the common ancestor in a tree. If, in searching upward from the source or target snapshot you encounter a merge-out and merge-in pair of snapshots, you will have to follow both parent branches upward toward the root (the create-repo snapshot) because the grandma could be in either one of them. A simple way of doing this is to pick one branch to do immediately and put the other mom-branch's snapshot (or whatever is needed to identify and use it later) on a "pending" list (or array, stack, etc.). You will find a grandma candidate snapshot along every path from your (R or T) snapshot up to the root (create-repo snapshot). It is only the most recent of them that is the actual grandma snapshot for this R-and-T merge.
 
-###Dot-Files
+### Dot-Files
+
 If you find it convenient, you can put VCS files in the user's project tree at its root folder. These files must have a filename beginning with a dot/period, '.', and the prefix “vcsx” for our VCS system. If you decide to do this, make sure that dot-files are not included when you check in a snapshot.
 
-###User Interface
+### User Interface
+
 Make sure that you can enter a “command line” in a VCS web page edit box to initiate a command. The command line should include the VCS command name and all arguments needed to process that
 command. This is in addition to any fancier GUI mechanisms you have provided. All VCS command should be able to be run via this command line mechanism.
 
